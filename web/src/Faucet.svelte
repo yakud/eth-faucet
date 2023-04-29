@@ -9,9 +9,10 @@
     account: '0x0000000000000000000000000000000000000000',
     network: 'testnet',
     payout: 1,
+    tokenSymbol: 'ETH',
   };
 
-  $: document.title = `ETH ${capitalize(faucetInfo.network)} Faucet`;
+  $: document.title = `${faucetInfo.tokenSymbol} ${capitalize(faucetInfo.network)} Faucet`;
 
   onMount(async () => {
     const res = await fetch('/api/info');
@@ -80,7 +81,7 @@
               <span class="icon">
                 <i class="fa fa-bath" />
               </span>
-              <span><b>ETH Faucet</b></span>
+              <span><b>{faucetInfo.network}</b></span>
             </a>
           </div>
           <div id="navbarMenu" class="navbar-menu">
@@ -106,7 +107,7 @@
       <div class="container has-text-centered">
         <div class="column is-6 is-offset-3">
           <h1 class="title">
-            Receive {faucetInfo.payout} ETH per request
+            Receive {faucetInfo.payout} {faucetInfo.tokenSymbol} per request
           </h1>
           <h2 class="subtitle">
             Serving from {faucetInfo.account}
@@ -139,8 +140,7 @@
 
 <style>
   .hero.is-info {
-    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
-      url('/background.jpg') no-repeat center center fixed;
+    background: linear-gradient(rgb(0 0 0 / 58%), rgb(0 0 0 / 94%));
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;

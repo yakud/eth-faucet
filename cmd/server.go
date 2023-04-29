@@ -28,6 +28,7 @@ var (
 	payoutFlag   = flag.Int("faucet.amount", 1, "Number of Ethers to transfer per user request")
 	intervalFlag = flag.Int("faucet.minutes", 1440, "Number of minutes to wait between funding rounds")
 	netnameFlag  = flag.String("faucet.name", "testnet", "Network name to display on the frontend")
+	tokenSymbol  = flag.String("faucet.token_symbol", "ETH", "Token symbol to display on the frontend")
 
 	keyJSONFlag  = flag.String("wallet.keyjson", os.Getenv("KEYSTORE"), "Keystore file to fund user requests with")
 	keyPassFlag  = flag.String("wallet.keypass", "password.txt", "Passphrase text file to decrypt keystore")
@@ -57,7 +58,15 @@ func Execute() {
 	if err != nil {
 		panic(fmt.Errorf("cannot connect to web3 provider: %w", err))
 	}
-	config := server.NewConfig(*netnameFlag, *httpPortFlag, *intervalFlag, *payoutFlag, *proxyCntFlag, *queueCapFlag)
+	config := server.NewConfig(
+		*netnameFlag,
+		*httpPortFlag,
+		*intervalFlag,
+		*payoutFlag,
+		*proxyCntFlag,
+		*queueCapFlag,
+		*tokenSymbol,
+	)
 	go server.NewServer(txBuilder, config).Run()
 
 	c := make(chan os.Signal, 1)

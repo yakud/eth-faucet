@@ -126,9 +126,10 @@ func (s *Server) handleInfo() http.HandlerFunc {
 			return
 		}
 		renderJSON(w, infoResponse{
-			Account: s.Sender().String(),
-			Network: s.cfg.network,
-			Payout:  strconv.Itoa(s.cfg.payout),
+			Account:     s.Sender().String(),
+			Network:     s.cfg.network,
+			Payout:      strconv.Itoa(s.cfg.payout),
+			TokenSymbol: s.cfg.tokenSymbol,
 		}, http.StatusOK)
 	}
 }

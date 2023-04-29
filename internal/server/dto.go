@@ -21,9 +21,10 @@ type claimResponse struct {
 }
 
 type infoResponse struct {
-	Account string `json:"account"`
-	Network string `json:"network"`
-	Payout  string `json:"payout"`
+	Account     string `json:"account"`
+	Network     string `json:"network"`
+	Payout      string `json:"payout"`
+	TokenSymbol string `json:"tokenSymbol"`
 }
 
 type malformedRequest struct {
