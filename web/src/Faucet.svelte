@@ -12,11 +12,20 @@
     tokenSymbol: 'ETH',
   };
 
+  // try to load from local storage
+  const localFaucetInfo = localStorage.getItem('faucetInfo');
+  if (localFaucetInfo) {
+    faucetInfo = JSON.parse(localFaucetInfo);
+  }
+
   $: document.title = `${faucetInfo.tokenSymbol} ${capitalize(faucetInfo.network)} Faucet`;
 
   onMount(async () => {
     const res = await fetch('/api/info');
     faucetInfo = await res.json();
+
+    // put the faucet info into the local storage
+    localStorage.setItem('faucetInfo', JSON.stringify(faucetInfo));
   });
 
   setToast({
