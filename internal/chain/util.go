@@ -6,9 +6,11 @@ import (
 	"github.com/ethereum/go-ethereum/common"
 )
 
-func EtherToWei(amount int64) *big.Int {
+func EtherToWeiWithRound(amount float64) *big.Int {
 	ether := new(big.Int).Exp(big.NewInt(10), big.NewInt(18), nil)
-	return new(big.Int).Mul(big.NewInt(amount), ether)
+	wei := new(big.Float).Mul(big.NewFloat(amount), new(big.Float).SetInt(ether))
+	weiInt, _ := wei.Int(nil) // rounding to nearest integer
+	return weiInt
 }
 
 func Has0xPrefix(str string) bool {
