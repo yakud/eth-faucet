@@ -5,7 +5,6 @@
   import { setDefaults as setToast, toast } from 'bulma-toast';
   import detectEthereumProvider from '@metamask/detect-provider';
 
-  let input = null;
   let faucetInfo = {
     account: '0x0000000000000000000000000000000000000000',
     network: 'testnet',
@@ -38,8 +37,8 @@
   });
 
   async function handleRequest() {
-    let address = input;
-    if (address.endsWith('.eth')) {
+    let address = accountAddress;
+    if (address && address.endsWith('.eth')) {
       try {
         const provider = new CloudflareProvider();
         address = await provider.resolveName(address);
