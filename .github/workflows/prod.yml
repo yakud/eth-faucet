@@ -37,5 +37,6 @@ jobs:
           --set image.tag=${{ env.VERSION }} \
           --set commitSha=${{ github.sha }} \
           --set secretEnv.PRIVATE_KEY=${{ secrets.PRIVATE_KEY }} \
-          -ojson | jq -r .info.notes >> $GITHUB_STEP_SUMMARY
+          -ojson > result.json 
+          jq -r .info.notes < result.json >> $GITHUB_STEP_SUMMARY
 
