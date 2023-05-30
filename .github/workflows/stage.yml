@@ -35,6 +35,6 @@ jobs:
           helm upgrade --install -n ${{ env.NAMESPACE }} faucet .ops/chart \
           --set image.tag=${{ env.VERSION }} \
           --set commitSha=${{ github.sha }} \
-          --set secretEnv.PRIVATE_KEY=${{ secrets.PRIVATE_KEY }}
+          --set secretEnv.PRIVATE_KEY=${{ secrets.PRIVATE_KEY }} \
           -ojson | jq -r .info.notes >> $GITHUB_STEP_SUMMARY
 
