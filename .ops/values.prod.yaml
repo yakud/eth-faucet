@@ -1,0 +1,5 @@
+AppEnv:
+  WEB3_PROVIDER: https://evm-rpc-http-devnet-41233.galactica.com
+
+image:
+  registry: 10.24.1.2:5000

@@ -1,15 +1,15 @@
-name: 'deploy: stage'
+name: 'deploy: production cluster'
 on:
-  # push:
-  #   branches:
-  #     - main
-  #   tags:
-  #     - rc*
+  push:
+    branches:
+      - main
+    tags:
+      - v*
   workflow_dispatch:
 
 env:
-  DOCKER_REGISTRY: 10.10.0.116:5000
-  NAMESERVER: 10.0.0.5
+  DOCKER_REGISTRY: 10.24.1.2:5000
+  NAMESERVER: 10.24.0.5
   NAMESPACE: galactica
 
 jobs:
@@ -23,7 +23,7 @@ jobs:
   deploy:
     needs: build
     runs-on: self-hosted
-    environment: dev
+    environment: prod
     steps:
       - name: Check $HOME/.kube directory
         run: |
@@ -33,6 +33,7 @@ jobs:
       - name: helm deploy
         run: |
           helm upgrade --install -n ${{ env.NAMESPACE }} faucet .ops/chart \
+          -f .ops/values.prod.yaml \
           --set image.tag=${{ env.VERSION }} \
           --set commitSha=${{ github.sha }} \
           --set secretEnv.PRIVATE_KEY=${{ secrets.PRIVATE_KEY }} \
