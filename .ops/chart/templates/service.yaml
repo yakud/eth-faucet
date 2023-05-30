@@ -1,0 +1,22 @@
+{{ range $name, $val := .Values.services }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: "{{ $name }}"
+  labels:
+    {{- include "chart.labels" $ | nindent 4 }}
+  annotations:
+    {{- include "chart.customAnn" $ | nindent 4 }}
+spec:
+  type: ClusterIP
+  ports:
+  {{- range $i, $s := $val}}
+    - port: {{ $s.port }}
+      targetPort: {{ $s.port }}
+      protocol: TCP
+      name: {{ $s.name }}
+{{- end }}
+  selector:
+    {{- include "chart.selectorLabels" $ | nindent 4 }}
+---
+{{ end }}

@@ -1,0 +1,35 @@
+{{ range $name, $ing := .Values.ingresses }}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ $name }}
+  labels:
+    {{- include "chart.labels" $ | nindent 4 }}
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    {{- with $ing.annotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+    {{- include "chart.customAnn" $ | nindent 4 }}
+spec:
+  tls:
+{{- range $i, $host := $ing.hosts }}
+  - hosts:
+    - {{ $host.host }}
+    secretName: {{ $host.tlsName | default $host.host }}
+{{- end }}
+  rules:
+{{- range $i, $host := $ing.hosts }}
+  - host: {{ $host.host }}
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: {{ $host.service.name }}
+            port:
+              number: {{ $host.service.port }}
+{{- end }}
+---
+{{- end }}

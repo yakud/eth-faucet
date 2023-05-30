@@ -1,0 +1,8 @@
+### {{ if .Release.IsUpgrade }}Upgraded{{ else }}Failure{{ end }}
+
+Release "{{ .Release.Name}}" {{ if .Release.IsUpgrade -}}upgraded{{ else }}not upgraded{{ end }} to rev {{.Release.Revision}} in namespace {{ .Release.Namespace }}
+
+To access:
+{{- range $i, $h := .Values.ingresses }}
+    https://{{ with (first $h.hosts) }}{{printf .host }}{{end}}
+{{- end }}

@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: "{{ .Release.Name }}-sysenv"
+  labels:
+    {{- include "chart.labels" . | nindent 4 }}
+  annotations:
+    {{- include "chart.customAnn" . | nindent 4 }}
+data: 
+{{- range $key, $value := .Values.AppEnv }}
+  {{ $key }}: {{ $value | toString | quote }}
+{{- end }}

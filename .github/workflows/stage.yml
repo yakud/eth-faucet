@@ -1,0 +1,42 @@
+name: 'deploy: stage'
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - rc*
+  workflow_dispatch:
+
+env:
+  DOCKER_REGISTRY: 10.10.0.116:5000
+  NAMESERVER: 10.0.0.5
+  NAMESPACE: galactica
+
+jobs:
+  build:
+    runs-on: self-hosted
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+      - name: set VERSION
+        run: echo VERSION=`make VERSION` >> "$GITHUB_ENV"
+      - name: build & push
+        run: make docker-build docker-push DOCKER_REGISTRY=${{ env.DOCKER_REGISTRY }} VERSION=${{ env.VERSION }}
+  deploy:
+    needs: build
+    runs-on: self-hosted
+    environment: dev
+    steps:
+      - name: Check $HOME/.kube directory
+        run: |
+          bash /prepare.sh
+          echo "${{ secrets.KUBE_CONFIG }}" | base64 -d > $HOME/.kube/config && chmod go= $HOME/.kube/config
+          echo "nameserver ${{ env.NAMESERVER }}" > /etc/resolv.conf
+      - name: helm deploy
+        run: |
+          helm upgrade --install -n ${{ env.NAMESPACE }} faucet .ops/chart \
+          --set image.tag=${{ env.VERSION }} \
+          --set commitSha=${{ github.sha }} \
+          --set secretEnv.PRIVATE_KEY=${{ secrets.PRIVATE_KEY }}
+          -ojson | jq -r .info.notes >> $GITHUB_STEP_SUMMARY
+
