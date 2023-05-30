@@ -30,4 +30,4 @@ COPY --from=backend /backend-build/eth-faucet /app/eth-faucet
 
 EXPOSE 8080
 
-ENTRYPOINT ["/app/eth-faucet"]
+CMD [ "/app/eth-faucet" ]
