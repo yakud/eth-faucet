@@ -21,7 +21,7 @@ IMG_TAG:
 	@printf ${IMG_TAG}
 
 docker-build:
-	echo docker build -t ${IMG_TAG} . 
+	docker build -t ${IMG_TAG} . 
 
 docker-push:
 	docker push ${IMG_TAG}
