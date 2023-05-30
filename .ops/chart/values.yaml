@@ -36,7 +36,7 @@ services: #{}
       name: faucet
 
 ingresses: #{}
-  graphql-public-api: #{}
+  faucet-gql-pub-api: #{}
     annotations:
       nginx.ingress.kubernetes.io/configuration-snippet: |
         more_set_headers "X-XSS-Protection" "1; mode=block" always;
