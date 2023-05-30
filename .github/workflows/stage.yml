@@ -8,8 +8,8 @@ on:
   workflow_dispatch:
 
 env:
-  DOCKER_REGISTRY: 10.10.0.116:5000
-  NAMESERVER: 10.0.0.5
+  DOCKER_REGISTRY: 10.24.1.2:5000
+  NAMESERVER: 10.24.0.5
   NAMESPACE: galactica
 
 jobs:
@@ -23,7 +23,7 @@ jobs:
   deploy:
     needs: build
     runs-on: self-hosted
-    environment: dev
+    environment: prod
     steps:
       - name: Check $HOME/.kube directory
         run: |
