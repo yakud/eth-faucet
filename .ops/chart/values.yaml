@@ -21,7 +21,7 @@ command:
   [
     "/app/eth-faucet",
     "-faucet.name", "Galactica-devnet-41233 faucet",
-    "-faucet.token_symbol", "GALA",
+    "-faucet.token_symbol", "GNET",
     "-faucet.amount", "0.1",
     "-httpport", "28080",
   ]
